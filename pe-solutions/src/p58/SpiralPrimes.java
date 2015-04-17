@@ -3,8 +3,6 @@
  */
 package p58;
 
-import java.util.Collection;
-
 import commons.CommonFunctions;
 
 /**
@@ -13,37 +11,42 @@ import commons.CommonFunctions;
  */
 public class SpiralPrimes {
 
-	static int primesFound = 0;
-	static int oldLength = 0;
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		long start = System.currentTimeMillis();
-		boolean found = false;
 		Spiral spiral = new Spiral();
-	
-		while(!found){
-			oldLength=spiral.getSpiral().size();
-			spiral.wrapOneLayer();
-			spiral.recomputeDiagonals();
-			if(ratioPrimesOverDiagonals(spiral)<=0.1)
-				found=true;
-			
-			System.out.println("length of the spiral = "+spiral.getSideLength()+ 
-					" Percentage is "+ratioPrimesOverDiagonals(spiral));
-		}
+		spiral.wrapOneLayer();
+		spiral.recomputeDiagonals();
+		double ratioPrimesOverTotal = 1;
+		int primes = 0;
+		int sideLength = 1;
 		
-		System.out.println("length of the spiral = "+spiral.getSideLength()+ 
-				" total num in diag = "+totalNumbersInDiagonals(spiral));
-
+		for(sideLength=1; ratioPrimesOverTotal>.1; sideLength+=2){
+			int spiralLength = (int) Math.pow(sideLength+2, 2);
+			for(int i = sideLength*sideLength+1; i<=spiralLength; i++){
+				if(isDiagonalMember(sideLength+2, i)){
+					if(CommonFunctions.isPrime(i)){
+						primes++;
+					}
+				}
+			}
+			ratioPrimesOverTotal = primes/(double)totalNumbersInDiagonals(sideLength+2);
+		}
+		System.out.println("side length = "+sideLength);
+		System.out.println("primes="+primes);
+		System.out.println("total nums = "+totalNumbersInDiagonals(sideLength));
 		long end = System.currentTimeMillis();
-		System.out.println("Percentage is "+ratioPrimesOverDiagonals(spiral));
-		System.out.println("It took "+(double)(end-start)/1000+" seconds.");
+		System.out.println("Percentage is "+ratioPrimesOverTotal);
+		System.out.println("It took "+(end-start)+" millisecondss.");
 	}
 
-	public static int totalNumbersInDiagonals(Spiral spiral){
-		int len = spiral.getSideLength();
+	private static boolean isDiagonalMember(int sideLength, int num) {
+		return (num-(sideLength-2)*(sideLength-2))%(sideLength-1)==0;
+	}
+
+	public static int totalNumbersInDiagonals(int len){
 		if(len == 1)
 			return 1;
 		if(len%2 == 0)
@@ -51,24 +54,4 @@ public class SpiralPrimes {
 		else 
 			return 2*len - 1;
 	}
-
-	public static double ratioPrimesOverDiagonals(Spiral spiral){
-		Collection<Number> diag1 = spiral.getPrincipalDiagonal();
-		Collection<Number> diag2 = spiral.getSecondaryDigonal();
-		countPrimes(diag1);
-		countPrimes(diag2);
-		return (primesFound)/(double)totalNumbersInDiagonals(spiral);
-	}
-
-	private static void countPrimes(Collection<Number> diag1) {
-//		int count = 0;
-		Number[] array = new Number[diag1.size()];
-		diag1.toArray(array);
-		
-		for (int i = array.length-1; i>oldLength; i--) {
-			if(CommonFunctions.isPrime(array[i]));
-				primesFound++;
-		}
-	}
-
 }

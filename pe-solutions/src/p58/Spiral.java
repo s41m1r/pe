@@ -3,21 +3,22 @@
  */
 package p58;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Saimir Bala
  *
  */
 public class Spiral {
-	private ArrayList<Number> spiral;
+	private List<Number> spiral;
 	private Collection<Number> principalDiagonal; //from top left to bottom right
 	private Collection<Number> secondaryDigonal;
 	
 	public Spiral() {
-		spiral = new ArrayList<Number>();
+		spiral = new LinkedList<Number>();
 		spiral.add(1);
 		principalDiagonal = new HashSet<Number>();
 		secondaryDigonal = new HashSet<Number>();
@@ -33,6 +34,16 @@ public class Spiral {
 	public void wrapOneLayer() {
 		wrapHalfLayer();
 		wrapHalfLayer();
+	}
+	
+	public Collection<Number> numberOfNextLayer(int sideLength){
+		Collection<Number> numbers = new LinkedList<Number>();
+		
+		int spiralLength = (int) Math.pow(sideLength+2, 2);
+		for(int i = sideLength*sideLength+1; i<=spiralLength; i++){
+			numbers.add(i);
+		}
+		return numbers;
 	}
 	
 	public void recomputeDiagonals(){
@@ -91,7 +102,7 @@ public class Spiral {
 	/**
 	 * @return the spiral
 	 */
-	public ArrayList<Number> getSpiral() {
+	public Collection<Number> getSpiral() {
 		return spiral;
 	}	
 
