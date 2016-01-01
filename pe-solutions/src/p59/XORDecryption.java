@@ -28,8 +28,10 @@ public class XORDecryption {
 			String msg = "";
 			for (int i = 0; i < res.length; i++) {
 				int ascii = res[i].intValue();
-				if(ascii<32 || ascii>126)
+				if(ascii<32 || ascii>126){
 					candidate = false;
+					break;//useless to go on
+				}
 				char ch = (char) ascii;
 				msg+=ch;
 			}
@@ -45,6 +47,7 @@ public class XORDecryption {
 				if(precision>PRECISION){
 					candidates.add(msg);
 					k += ""+((char)key[0].intValue())+((char)key[1].intValue())+((char)key[2].intValue());
+					break;//already found
 				}
 			}
 		}
@@ -55,7 +58,7 @@ public class XORDecryption {
 				asciiValuesSum+=msg.charAt(i);
 			}
 		}
-		System.out.println("k="+k+" ascii sum = "+asciiValuesSum);
+		System.out.println("k="+k+", ascii sum = "+asciiValuesSum);
 		System.out.println("Time="+(System.currentTimeMillis()-start));
 		
 		//range 32 - 126; maybe enough: 97 - 122
