@@ -11,12 +11,12 @@ public class XORDecryption {
 	
 	final static int ALPHABET_START = 97;
 	final static int ALPHABET_END = 122;
-	final static double PRECISION = .8;
+	final static double PRECISION = .9;
 
 	public static void main(String[] args) throws FileNotFoundException {
 		long start = System.currentTimeMillis();
 		Integer[] message = readMessage("data/p059_cipher.txt");
-		Set<String> englishWords = readWordList("data/google-10000-english.txt");
+		Set<String> englishWords = readWordList("data/words.txt");
 		ArrayList<Integer[]> keys = generateKeys();
 		ArrayList<String> candidates = new ArrayList<String>();
 		String k = "";
@@ -58,7 +58,8 @@ public class XORDecryption {
 				asciiValuesSum+=msg.charAt(i);
 			}
 		}
-		System.out.println("k="+k+", ascii sum = "+asciiValuesSum);
+//		System.out.println("k="+k+", ascii sum = "+asciiValuesSum);
+		System.out.println((k.equals("")));
 		System.out.println("Time="+(System.currentTimeMillis()-start));
 		
 		//range 32 - 126; maybe enough: 97 - 122
