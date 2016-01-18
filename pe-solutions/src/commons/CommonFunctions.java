@@ -25,6 +25,11 @@ public class CommonFunctions {
 		return true;
 	}
 	
+	/**
+	 * Sieve of Eratosthenes
+	 * @param n
+	 * @return
+	 */
 	public static List<Integer> calcPrimeNumbers(int n) {
 	    boolean[] isPrimeNumber = new boolean[n + 1]; //all false by default
 	    List<Integer> primes = new ArrayList<Integer>();
@@ -93,5 +98,20 @@ public class CommonFunctions {
 		System.out.println("\tSet 1: "+(mid-start)+"\t Set 2: "+(end-mid));
 	}
 	
+	public static <T> Set<Set<T>> combinations(Set<T> original, int k){
+		ArrayList<T> app = new ArrayList<T>(original);
+		Set<BitSet> bitSets = subsets(original.size());
+		Set<Set<T>> result = new HashSet<Set<T>>();
+		for (BitSet bitSet : bitSets) {
+			if(bitSet.cardinality()==k){
+				Set<T> subset = new HashSet<T>();
+				for (int i = bitSet.nextSetBit(0); i >= 0; i = bitSet.nextSetBit(i+1)) {
+					subset.add(app.get(i));
+				}
+				result.add(subset);
+			}
+		}
+		return result;
+	}
 	
 }

@@ -21,10 +21,10 @@ package p51;
 
 import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 import commons.CommonFunctions;
 import commons.SieveOfAtkin;
@@ -41,21 +41,18 @@ public class PrimeDigitReplacements {
 	 */
 	public static void main(String[] args) {
 		long start = System.currentTimeMillis();
-		Set<Integer> primes = new TreeSet<Integer>(SieveOfAtkin.primesList(SEARCH_SPACE));
-		int result = 0;
+		Set<Long> primes = new HashSet<Long>(SieveOfAtkin.primesList(SEARCH_SPACE));
 		boolean found = false;
-		List<Integer> family = new ArrayList<Integer>();
-		
-		Iterator<Integer> it = primes.iterator();		
-//		System.out.println(primes.contains(Integer.valueOf(56113)));
+		List<Long> family = new ArrayList<Long>();
+		Iterator<Long> it = primes.iterator();		
 		while (!found && it.hasNext()) {
-			Integer p = it.next();
+			Long p = it.next();
 			int count = 0;
 			int digits = (int) (Math.log10(p)+1);
 			Set<BitSet> possibleReplacements = CommonFunctions.subsets(digits);
 			for (Iterator<BitSet> it2 = possibleReplacements.iterator(); !found && it2
 					.hasNext();) {
-				family = new ArrayList<Integer>();
+				family = new ArrayList<Long>();
 				BitSet replacement = it2.next();
 				count=0;
 				if(replacement.cardinality()!=0 && replacement.cardinality()!=digits){
@@ -64,20 +61,18 @@ public class PrimeDigitReplacements {
 					if(replacement.get(0))
 						i++;
 					for(; i<10; i++){
-						Integer num = replace(p, replacement, i);
+						Long num = replace(p, replacement, i);
 						if(primes.contains(num)){
 							count++;
 							family.add(num);
 						}
 					}
 					if(count==FAMILY_SIZE){
-						result = p;
 						found = true;
 					}
 				}
 			}
 		}
-		System.out.println("Result="+result);
 		System.out.println("Family="+family+"\nsize="+family.size());
 		System.out.println("Time "+(System.currentTimeMillis()-start));
 	}
@@ -88,7 +83,7 @@ public class PrimeDigitReplacements {
 	 * @param v what value for replacement (0 ... 9)
 	 * @return the replaced number
 	 */
-	private static Integer replace(Integer p, BitSet replacement, int i) {
+	private static Long replace(Long p, BitSet replacement, int i) {
 		String numString = p.toString();
 		char[] res = new char[numString.length()];
 		int setBitIdx = replacement.nextSetBit(0);
@@ -102,7 +97,7 @@ public class PrimeDigitReplacements {
 				}
 			}
 		}
-		return Integer.valueOf(String.valueOf(res));
+		return Long.valueOf(String.valueOf(res));
 	}
 
 }

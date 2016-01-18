@@ -8,12 +8,12 @@ import java.util.List;
 
 public class SieveOfAtkin {
 	
-	public static List<Integer> primesList(long MAX) {
+	public static List<Long> primesList(long MAX) {
 		final long SQRT_MAX = (long) Math.sqrt(MAX) + 1;
 		final int MEMORY_SIZE = (int) (MAX >> 4);
 		byte[] array = new byte[MEMORY_SIZE];
 		
-		List<Integer> primes = new ArrayList<Integer>();
+		List<Long> primes = new ArrayList<Long>();
 
 		// Find prime
 		int[] sequence = { 2, 4 };
@@ -104,8 +104,8 @@ public class SieveOfAtkin {
 		}
 
 		// Put primes into result list
-		primes.add(2);
-		for (int i = 3; i < MAX; i += 2) {
+		primes.add(2L);
+		for (long i = 3; i < MAX; i += 2) {
 			if (getBit(i, array)) {
 				primes.add(i);
 			}
@@ -113,14 +113,14 @@ public class SieveOfAtkin {
 		return primes;
 	}
 
-	public static boolean getBit(long i, byte[] array) {
+	private static boolean getBit(long i, byte[] array) {
 		byte block = array[(int) (i >> 4)];
 		byte mask = (byte) (1 << ((i >> 1) & 7));
 
 		return ((block & mask) != 0);
 	}
 
-	public static void setBit(long i, byte[] array) {
+	private static void setBit(long i, byte[] array) {
 		int index = (int) (i >> 4);
 		byte block = array[index];
 		byte mask = (byte) (1 << ((i >> 1) & 7));
@@ -128,7 +128,7 @@ public class SieveOfAtkin {
 		array[index] = (byte) (block | mask);
 	}
 
-	public static void unSetBit(long i, byte[] array) {
+	private static void unSetBit(long i, byte[] array) {
 		int index = (int) (i >> 4);
 		byte block = array[index];
 		byte mask = (byte) (1 << ((i >> 1) & 7));
@@ -136,7 +136,7 @@ public class SieveOfAtkin {
 		array[index] = (byte) (block & ~mask);
 	}
 
-	public static void toggleBit(long i, byte[] array) {
+	private static void toggleBit(long i, byte[] array) {
 		int index = (int) (i >> 4);
 		byte block = array[index];
 		byte mask = (byte) (1 << ((i >> 1) & 7));
