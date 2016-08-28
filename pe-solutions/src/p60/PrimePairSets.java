@@ -45,7 +45,7 @@ public class PrimePairSets {
 		result.add(3L);
 		result.add(7L);
 		result.add(109L);
-		result.add(673L);
+//		result.add(673L);
 		int timesFound = 0;
 		for (Iterator<Long> it = primeList.iterator(); it.hasNext();) {
 			Long x = it.next();
